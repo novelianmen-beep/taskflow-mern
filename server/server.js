@@ -26,12 +26,17 @@ app.use(async (req, res, next) => {
     if (!dbPromise) {
       dbPromise = connectDB();
     }
+
     await dbPromise;
     next();
   } catch (error) {
+    dbPromise = null;
     next(error);
   }
 });
+
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/tasks", require("./routes/tasks"));
 
 module.exports = app;
 
